@@ -8,5 +8,6 @@ export function invertObj(obj) {
   for (let i in obj) {
     newObject[obj[i]] = i;
   }
-  return obj ? newObject : obj
+  if(!obj)return undefined
+  return newObject
 }

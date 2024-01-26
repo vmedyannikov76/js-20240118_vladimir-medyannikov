@@ -7,7 +7,6 @@ export function uniq(arr) {
   if (!arr) {return [];}
   if (!arr.length) return [];
   const newArr = new Set();
-
   arr.forEach(element => {
     newArr.add(element);
   });

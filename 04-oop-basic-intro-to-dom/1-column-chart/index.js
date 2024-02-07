@@ -1,7 +1,6 @@
 
 
 export default class ColumnChart {
-  element;
   chartHeight = 50
 
   constructor({
@@ -14,9 +13,9 @@ export default class ColumnChart {
     this.label = label;
     this.link = link;
     this.data = data;
-    this.value = value;
+    this.value = typeof(value) === 'number' ? Intl.NumberFormat('en').format(value) : value;
     this.formatHeading = formatHeading;
-    this.element = this.createElement(this.createTemplate());
+    this.element = this.createElement(this.createTemplate(this.label));
   }
 
   createLink(){
@@ -40,17 +39,16 @@ export default class ColumnChart {
     return this.getColumnProps().map(({value, percent})=>{
       return `<div style="--value: ${value}" data-tooltip="${percent}"></div>`
     }).join('')
-   
   }
 createClassChart(){
   return this.data.length?'column-chart':'column-chart column-chart_loading';
   
 }
-  createTemplate() {
-    return [`
-    <div class="${this.createClassChart()}" style="--chart-height: 50">
+  createTemplate(label) {
+    return `
+    <div class="${this.createClassChart()}" style="--chart-height: ${this.chartHeight}">
       <div class="column-chart__title">
-        ${this.label}
+        ${label}
         ${this.createLink()}
       </div>
       <div class="column-chart__container">
@@ -60,13 +58,12 @@ createClassChart(){
         </div>
       </div>
     </div>
-    `]
-  
+    `;  
 }
   createElement(template) {
     const element = document.createElement("div");
     element.innerHTML = template;
-    return element.firstChild;
+    return element.firstElementChild;
   }
   remove(){
       this.element.remove()
